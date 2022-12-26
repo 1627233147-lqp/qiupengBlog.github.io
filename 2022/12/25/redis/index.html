@@ -1,0 +1,412 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Redis教程 | 晴天☀️的Blog</title><meta name="author" content="晴天☀️"><meta name="copyright" content="晴天☀️"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="这我的第一个博客文章  redis 概念 下载安装 命令操作 数据结构 持久化操作 使用Java客户端操作redis    Redis        概念： redis是一款 高性能 的NOSQL系列的非关系型数据库     什么是NOSQL         NoSQL(NoSQL &#x3D; Not Only SQL)，意即“不仅仅是SQL”，是一项全新的数据库理念，泛 指非关系型的数据库 N">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis教程">
+<meta property="og:url" content="http://example.com/2022/12/25/redis/index.html">
+<meta property="og:site_name" content="晴天☀️的Blog">
+<meta property="og:description" content="这我的第一个博客文章  redis 概念 下载安装 命令操作 数据结构 持久化操作 使用Java客户端操作redis    Redis        概念： redis是一款 高性能 的NOSQL系列的非关系型数据库     什么是NOSQL         NoSQL(NoSQL &#x3D; Not Only SQL)，意即“不仅仅是SQL”，是一项全新的数据库理念，泛 指非关系型的数据库 N">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://rnfs4jdgz.hn-bkt.clouddn.com/avater/652fb471dfa1d78d5e9ceb8c32c344a.jpg?e=1671956778&token=xfTPLrBLsExu34MiHF7A3uTncybw6cbi2o3OhVYG:Rh_f5NuUnIL7bzOaZafaIqDIx-Y=">
+<meta property="article:published_time" content="2022-12-25T07:59:54.290Z">
+<meta property="article:modified_time" content="2022-12-25T08:13:21.923Z">
+<meta property="article:author" content="晴天☀️">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://rnfs4jdgz.hn-bkt.clouddn.com/avater/652fb471dfa1d78d5e9ceb8c32c344a.jpg?e=1671956778&token=xfTPLrBLsExu34MiHF7A3uTncybw6cbi2o3OhVYG:Rh_f5NuUnIL7bzOaZafaIqDIx-Y="><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2022/12/25/redis/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Redis教程',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-12-25 16:13:21'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="http://rnfs4jdgz.hn-bkt.clouddn.com/avater/652fb471dfa1d78d5e9ceb8c32c344a.jpg?e=1671956778&amp;token=xfTPLrBLsExu34MiHF7A3uTncybw6cbi2o3OhVYG:Rh_f5NuUnIL7bzOaZafaIqDIx-Y=" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">3</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/"><span> 关于作者</span></a></div><div class="menus_item"><a class="site-page" href="/"><span> MyPhoto</span></a></div><div class="menus_item"><a class="site-page" href="/"><span> 我的博客</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="晴天☀️的Blog"><span class="site-name">晴天☀️的Blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/"><span> 关于作者</span></a></div><div class="menus_item"><a class="site-page" href="/"><span> MyPhoto</span></a></div><div class="menus_item"><a class="site-page" href="/"><span> 我的博客</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Redis教程</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-12-25T07:59:54.290Z" title="发表于 2022-12-25 15:59:54">2022-12-25</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-12-25T08:13:21.923Z" title="更新于 2022-12-25 16:13:21">2022-12-25</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Redis教程"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>这我的第一个博客文章</p>
+<ol>
+<li>redis<ol>
+<li>概念</li>
+<li>下载安装</li>
+<li>命令操作</li>
+<li>数据结构</li>
+<li>持久化操作</li>
+<li>使用Java客户端操作redis</li>
+</ol>
+</li>
+</ol>
+<h1 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h1><p>   </p>
+<p>    概念： redis是一款 高性能 的NOSQL系列的非关系型数据库</p>
+<p>    什么是NOSQL<br>         NoSQL(NoSQL &#x3D; Not Only SQL)，意即“不仅仅是SQL”，是一项全新的数据库理念，泛 指非关系型的数据库</p>
+<p>NOSQL和关系型数据库比较：</p>
+<p>        <strong>优点：</strong><br>             1）成本：nosql数据库简单易部署，基本都是开源软件，不需要像使用oracle那样花费大量成本购买使用，相比关系型数据库价格便宜。<br>             2）查询速度：nosql数据库将数据存储于缓存之中，关系型数据库将数据存储在硬盘中，自然查询速度远不及nosql数据库。<br>             3）存储数据的格式：nosql的存储格式是key,value形式、文档形式等等，所以可以存储基础类型以及对象或者是集合等各种格式，而数据库则只支持	基础类型。<br>             4）扩展性：关系型数据库有类似join这样的多表查询机制的限制导致扩展很艰难。</p>
+<p>        <strong>缺点：</strong><br>             1）维护的工具和资料有限，因为nosql是属于新的技术，不能和关系型数据库10几年的技术同日而语。<br>             2）不提供对sql的支持，如果不支持sql这样的工业标准，将产生一定用户的学习和使用成本。<br>             3）不提供关系型数据库对事务的处理</p>
+<p> <strong>什么是Redis</strong><br>     Redis是用C语言开发的一个开源的  高性能  键值对（key-value）数据库，官方提供测试数      据，50个并发执行100000个请求,读的速度是110000次&#x2F;s,写的速度是81000次&#x2F;s ，且Redis通过提供多种键值数据类型来适应不同场景下的存储需求，目前为止Redis支持的键      值数据类型如下：</p>
+<ol>
+<li>字符串类型 string</li>
+<li>哈希类型 hash</li>
+<li>列表类型 list</li>
+<li>集合类型 set</li>
+<li>有序集合类型 sortedset</li>
+</ol>
+<h6 id="redis的应用场景"><a href="#redis的应用场景" class="headerlink" title="redis的应用场景"></a>redis的应用场景</h6><p>    缓存（数据查询、短连接、新闻内容、商品内容等等）</p>
+<p>    任务队列。（秒杀、抢购、12306等等）</p>
+<p>    应用排行榜 • 网站访问统计 软件下载量</p>
+<p>    数据过期处理（可以精确到毫秒 验证码 </p>
+<p>    分布式集群架构中的session分离</p>
+<p>    </p>
+<h6 id="2-下载安装"><a href="#2-下载安装" class="headerlink" title="2. 下载安装"></a>2. 下载安装</h6><ol>
+<li><p>官网：<a target="_blank" rel="noopener" href="https://redis.io/">https://redis.io</a></p>
+</li>
+<li><p>中文网：<a target="_blank" rel="noopener" href="http://www.redis.net.cn/">http://www.redis.net.cn/</a></p>
+<p> window版本：<a target="_blank" rel="noopener" href="https://github.com/tporadowski/redis/releases">https://github.com/tporadowski/redis/releases</a> </p>
+</li>
+<li><p>解压直接可以使用：</p>
+</li>
+</ol>
+<p>        redis.windows.conf：配置文件</p>
+<p>        redis-cli.exe：redis的客户端</p>
+<p>        redis-server.exe：redis服务器端</p>
+<p>​	4. 启动Redis服务器</p>
+<p>​		 CMD下进入安装目录 ，执行如下命令开启服务<br>​	 		redis-server.exe redis.windows.conf</p>
+<p>​	 	另起一个命令窗口，进入安装目录 执行 </p>
+<p>​			redis-cli.exe</p>
+<p>​		停止命令：</p>
+<p>​		redis-cli -h 127.0.0.1 -p 6379 shutdown</p>
+<p>​    5.客户端安装</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/uglide/RedisDesktopManager/releases/tag/0.8.8">https://github.com/uglide/RedisDesktopManager/releases/tag/0.8.8</a></p>
+<h6 id="3-命令操作"><a href="#3-命令操作" class="headerlink" title="3. 命令操作"></a>3. 命令操作</h6><p>    redis的数据结构：</p>
+<p>            key,value格式的数据，其中key都是字符串，value有5种不同的数据类型</p>
+<p>            分别为：</p>
+<p>                    字符串类型 string</p>
+<p>                    哈希类型 hash ： map格式</p>
+<p>                    列表类型 list ： linkedlist格式。支持重复元素</p>
+<p>                    集合类型 set ： 不允许重复元素</p>
+<p>                    有序集合类型 sortedset：不允许重复元素，且元素有顺序    </p>
+<p>                (1) 字符串类型 string</p>
+<p>                        存储： set key value</p>
+<p>                        获取： get key</p>
+<p>                        删除： del key</p>
+<p>​	                   场景：验证码，单一值存储                </p>
+<p>                (2) 哈希类型 hash</p>
+<p>                        存储： hset key field 键 值         hset mymap username wangkang</p>
+<p>                        获取： hget key field 键              hget mymap username</p>
+<p>                                     hgetall key：获取所有的field和value    hgetall mymap</p>
+<p>                        删除： hdel key field                   hdel mymap username</p>
+<p>​	                   场景：对象信息</p>
+<p>                (3) 列表类型 list:可以添加一个元素到列表的头部（左边）或者尾部（右边）</p>
+<p>                        存储：</p>
+<p>                                lpush key value: 将元素加入列表左边</p>
+<p>                                rpush key value：将元素加入列表右边</p>
+<p>                        获取：</p>
+<p>                                lrange key start end ：范围获取，start从0开始</p>
+<p>                                lrange myList 0 -1 查询所有</p>
+<p>                        删除：</p>
+<p>                                lpop key： 删除列表最左边的元素，并将元素返回</p>
+<p>                                rpop key： 删除列表最右边的元素，并将元素返回</p>
+<p>​		                        ltrim key start end：对一个列表进行修剪(trim)，就是说，让列表只保留指定区间内的元素，不在指定区间之内的元素都将被删除</p>
+<p>​                        场景：消息列表</p>
+<p>​                                   lrange key start end  如:  lrange key 0 2</p>
+<p>​                                   ltrim key start end     如: trim key 3 -1</p>
+<p>                (4) 集合类型 set ： 不允许重复元素</p>
+<p>                        存储：sadd key value        sadd mySet a</p>
+<p>                        获取：smembers key :获取set集合中所有元素        smembers mySet</p>
+<p>                        删除：srem key value:删除set集合中的某个元素        srem mySet a</p>
+<p>​						差异：sdiff key1 [key2] 返回第一个集合与其他集合之间的差异</p>
+<p>​						交集：sinter key1 [key2]返回给定所有集合的交集</p>
+<p>​                       并集：sunion key1 [key2] 返回所有给定集合的并集</p>
+<p>​                       判断： SISMEMBER key member 判断 member 元素是否是集合 key 的成员</p>
+<p>​                      场景：好友关系</p>
+<p>                (5) 有序集合类型 sortedset：不允许重复元素，且元素有顺序.每个元素都会关联一                      个double类型的分数.redis正是通过分数来为集合中的成员进行从小到大的排序</p>
+<p>​						score  相当于一个数据量：整形，浮点型，用再排行榜，评分</p>
+<p>​                        value    相当于某个业务的数据量名称，比如xiaoming 100，执行zadd paihang 100 xiaoming</p>
+<p>                       存储：zadd key score value    zadd mySort 1 a</p>
+<p>​					   默认：zrange  升序排序，withscores 表示获取值和序号，否则只获取值</p>
+<p>                       升序：zrange key start end [withscores]   zrange mySort 0 -1 withscores</p>
+<p>​					  降序：zrevrange  key start end [withscores]    zrevrange  mySort 0 -1 withscores</p>
+<p>                      删除：zrem key value      zrem mySort c </p>
+<p>​					 场景：排行榜             </p>
+<p>                (6) 其他命令</p>
+<p>                       keys * : 查询所有的键</p>
+<p>                       type key ： 获取键对应的value的类型</p>
+<p>                       del key：删除指定的key value</p>
+<p>​						setnx key value：设置原子性key，并发不会出现问题，一般用来做分布式锁，如果设置成功返回1，否则返回0</p>
+<p>                       FLUSHALL async：清空数据库</p>
+<h6 id="4-持久化"><a href="#4-持久化" class="headerlink" title="4. 持久化"></a>4. 持久化</h6><p>​		 redis是一个内存数据库，数据保存在内存中，但是我们都知道内存的数据变化是很快的，也容易发生丢失。		 幸好Redis还为我们提供了持久化的机制，分别是RDB和AOF</p>
+<p> 	<strong>持久化流程</strong></p>
+<p>​		（1）客户端向服务端发送写操作(数据在客户端的内存中)。<br>​		（2）数据库服务端接收到写请求的数据(数据在服务端的内存中)。<br>​		（3）服务端调用write这个系统调用，将数据往磁盘上写(数据在系统内存的缓冲区中)<br>​		（4）操作系统将缓冲区中的数据转移到磁盘控制器上(数据在磁盘缓存中)。<br>​		（5）磁盘控制器将数据写到磁盘的物理介质中(数据真正落到磁盘上)</p>
+<p>​	</p>
+<p>​		在我们安装了redis之后，所有的配置都是在redis.conf文件中，里面保存了RDB和AOF两种持久化机制的				各种配置 </p>
+<p>​	 <strong>RDB机制</strong> </p>
+<p>​			 <img src="https://img2018.cnblogs.com/i-beta/1641655/202001/1641655-20200117125957292-517552281.png" alt="img"> </p>
+<p>​			 RDB持久化方式能够在指定的时间间隔能对你的数据进行快照存储 。什么是快照呢，你可以理解成把当前				时刻的数据拍成一张照片保存下来 </p>
+<p>​			 RDB持久化是指在指定的时间间隔内将内存中的所有数据写入磁盘。也是默认的持久化方式，这种方式是				就是将内存中数据以快照的方式写入到二进制文件中,默认的文件名为dump.rdb </p>
+<p>​			  RDB 是一个紧凑的单一文件,很方便传送到另一个远端数据中心，非常适用于灾难恢复 </p>
+<p>​			</p>
+<p><strong>保存 <code>dump.rdb</code> 文件时， 服务器执行以下操作:</strong> </p>
+<p>​			Redis 调用forks. 同时拥有父进程和子进程。<br>​			子进程将数据集写入到一个临时 RDB 文件中。<br>​			当子进程完成对新 RDB 文件的写入时，Redis 用新 RDB 文件替换原来的 RDB 文件，并删除旧的 RDB 文件</p>
+<p><strong>RDB 方式的优点</strong></p>
+<p>如果你希望在 Redis 意外停止工作（例如电源中断）的情况下丢失的数据最少的话，那么 RDB 不适合你.虽然你可以配置不同的<code>save</code>时间点(例如每隔 5 分钟并且对数据集有 100 个写的操作),是 Redis 要完整的保存整个数据集是一个比较繁重的工作,你通常会每隔5分钟或者更久做一次完整的保存,万一在 Redis 意外宕机,你可能会丢失几分钟的数据 </p>
+<p> RDB 需要经常 fork 子进程来保存数据集到硬盘上,当数据集比较大的时候, fork 的过程是非常耗时的,可能会导致 Redis 在一些毫秒级内不能响应客户端的请求。如果数据集巨大并且 CPU 性能不是很好的情况下,这种情况会持续1秒, AOF 也需要 fork ,但是你可以调节重写日志文件的频率来提高数据集的耐久度 </p>
+<p><strong>RDB配置</strong></p>
+<p>​	RDB：默认方式，不需要进行配置，默认就使用这种机制</p>
+<p>              在一定的间隔时间中，检测key的变化情况，表示m秒内数据集存在n次修改时，然后持久化数据自动触发				</p>
+<p>​              bgsave命令</p>
+<p>              编辑redis.windwos.conf文件</p>
+<p>                  save 900 1             15分钟后，最少有一个key发生变化就持久化数据<br>                  save 300 10           5分钟后，最少有10个key发生变化就持久化数据<br>                  save 60 10000       1分钟之后，最少有10000个key发生变化就持久化数据</p>
+<p>              注意：重新启动redis服务器，并指定配置文件名称</p>
+<p>                   redis-server.exe redis.windows.conf  </p>
+<p>​			手动触发：</p>
+<p>​								 <img src="https://img2020.cnblogs.com/i-beta/1829785/202003/1829785-20200321142259183-1540512890.png" alt="img"> </p>
+<p>​				<strong>save</strong><br>　　			该命令 直接调用 rdbSave ，阻塞 Redis 主进程，直到保存完成为止。在主进程阻塞期间，服务器不能处理客户端的任何请求。<br>　　			显然该命令对于内存比较大的实例会造成长时间阻塞，这是致命的缺陷，为了解决此问题，Redis提供					了第二种方式。<br>　　		<strong>bgsave</strong><br>　　			 该命令则 fork 出一个子进程，子进程负责调用 rdbSave ，并在保存完成之后向主进程发送信号，通知保存已完成。 Redis 服务器在BGSAVE 执行期间仍然可以继续处理客户端的请求。阻塞只发生在					fork阶段，一般时间很短。<br>　　			基本上 Redis 内部所有的RDB操作都是采用 bgsave 命令</p>
+<p>​				<strong>数据恢复：</strong></p>
+<p>​					 只需将备份文件 (dump.rdb) 移动到 redis 安装目录并启动服务即可 </p>
+<p><strong>AOF方式的优点</strong></p>
+<p> <img src="https://img2018.cnblogs.com/i-beta/1641655/202001/1641655-20200117130653341-875550555.png" alt="img"> </p>
+<p>可以使用不同的 fsync 策略：无 fsync、每秒 fsync 、每次写的时候 fsync .使用默认的每秒 fsync 策略, Redis 的性能依然很好( fsync 是由后台线程进行处理的,主线程会尽力处理客户端请求),一旦出现故障，你最多丢失1秒的数据。</p>
+<p>AOF文件是一个只进行追加的日志文件,即使由于某些原因(磁盘空间已满，写的过程中宕机等等)未执行完整的写入命令,你也可使用redis-check-aof工具修复这些问题。</p>
+<p>Redis 可以在 AOF 文件体积变得过大时，自动地在后台对 AOF 进行重写： 重写后的新 AOF 文件包含了恢复当前数据集所需的最小命令集合。 整个重写操作是绝对安全的，因为 Redis 在创建新 AOF 文件的过程中，会继续将命令追加到现有的 AOF 文件里面，即使重写过程中发生停机，现有的 AOF 文件也不会丢失。 而一旦新 AOF 文件创建完毕，Redis 就会从旧 AOF 文件切换到新 AOF 文件，并开始对新 AOF 文件进行追加操作。</p>
+<p>AOF 文件有序地保存了对数据库执行的所有写入操作， 这些写入操作以 Redis 协议的格式保存， 因此 AOF 文件的内容非常容易被人读懂， 对文件进行分析（parse）也很轻松。 导出（export） AOF 文件也非常简单： 举个例子， 如果你不小心执行了 FLUSHALL 命令， 但只要 AOF 文件未被重写， 那么只要停止服务器， 移除 AOF 文件末尾的 FLUSHALL 命令， 并重启 Redis ， 就可以将数据集恢复到 FLUSHALL 执行之前的状态</p>
+<p><strong>AOF配置</strong></p>
+<p>​		 # 是否开启AOF，默认关闭（no） </p>
+<p>​			appendonly yes </p>
+<p>​		 # aof恢复文件目录 </p>
+<p>​			dir .&#x2F; 		</p>
+<p>​		# Redis支持三种不同的刷写模式：</p>
+<p>​			appendfsync always #每次收到写命令就立即强制写入磁盘，是最有保证的完全的持久化，但速度也是最						慢的，一般不推荐使用</p>
+<p>​			appendfsync everysec #每秒钟强制写入磁盘一次，在性能和持久化方面做了很好的折中,是受推荐的方式</p>
+<p>​			appendfsync no     #完全依赖OS（操作系统）的写入，一般为30秒左右一次,性能最好但是持久化最没有保证,不被推荐</p>
+<p>​		 # 指定 AOF 持久化文件名 </p>
+<p>​			 appendfilename “appendonly.aof” </p>
+<p>​		 #当前AOF文件大小是上次日志重写得到AOF文件大小的二倍时，自动启动新的日志重写过程 </p>
+<p>​			 auto-aof-rewrite-percentage 100 </p>
+<p>​		 #当前AOF文件启动新的日志重写过程的最小值，避免刚刚启动Reids时由于文件尺寸较小导致频繁的重写			auto-aof-rewrite-min-size 64mb </p>
+<p>​	<strong>数据恢复：</strong></p>
+<p>​					 只需将备份文件 (dump.rdb) 移动到 redis 安装目录并启动服务即可</p>
+<p>​    <strong>如何从RDB转换到aof文件</strong>**********<strong>：</strong></p>
+<p>   （1）进入redis-cli 或者redis-cli.exe</p>
+<p>  （2）127.0.0.1:6379&gt;  CONFIG SET appendonly yes # 动态配置支持aof持久化</p>
+<p>  （3）127.0.0.1:6379&gt; save  #保存rdb数据，然后他自然同步到aof文件</p>
+<p>  （4）127.0.0.1:6379&gt;  shutdown save    # 安全退出并存储数据</p>
+<p>​    如果不执行这个RDB到AOF文件的转换，那么直接更改配置文件成AOF，就会导致RDB里面的缓存数据丢失</p>
+<p><strong>RDB，AOF优缺点对比总结</strong></p>
+<p><strong>优点</strong></p>
+<ul>
+<li>RDB 方式可以保存过去一段时间内的数据，并且保存结果是一个单一的文件，可以将文件备份到其他服务器，并且在恢复大量数据的时候，RDB 方式的速度会比 AOF 方式的回复速度要快。</li>
+<li>AOF 方式默认每秒钟备份1次，频率很高，它的操作方式是以追加的方式记录日志而不是数据，并且它的重写过程是按顺序进行追加，所以它的文件内容非常容易读懂。可以在某些需要的时候打开 AOF 文件对其编辑，增加或删除某些记录，最后再执行恢复操作。</li>
+</ul>
+<p><strong>缺点</strong></p>
+<ul>
+<li>RDB 由于备份频率不高，所以在回复数据的时候有可能丢失一小段时间的数据，而且在数据集比较大的时候有可能对毫秒级的请求产生影响。</li>
+<li>AOF 的文件提及比较大，而且由于保存频率很高，所以整体的速度会比 RDB 慢一些，但是性能依旧很高</li>
+</ul>
+<p><strong>优先选择 RDB 还是 AOF ?</strong></p>
+<p>对于企业级的中大型应用，如果不想牺牲数据完整性但是又希望保持高效率，那么你应该同时使用 RDB 和 AOF 两种方式，打开了AOF持久化，RDB也是会还是会存在的</p>
+<p>如果你不打算耗费精力在这个地方，只需要保证数据完整性，那么优先考虑使用 AOF 方式；<br>RDB 方式非常适合大规模的数据恢复，如果业务对数据完整性和一致性要求不高，RDB是很好的选择</p>
+<p><strong>redis过期时间</strong></p>
+<p> 有时候我们并不希望redis的key一直存在。例如缓存，验证码等数据，我们希望它们能在一定时间内自动的被销毁。redis提供了一些命令，能够让我们对key设置过期时间，并且让key过期之后被自动删除 </p>
+<pre><code>EXPIRE &lt;key&gt; &lt;ttl&gt; 命令用于将键key 的生存时间设置为ttl 秒。
+PEXPIRE &lt;key&gt; &lt;ttl&gt; 命令用于将键key 的生存时间设置为ttl 毫秒。
+EXPIREAT &lt;key&gt; &lt; timestamp&gt; 命令用于将键key 的过期时间设置为timestamp所指定的秒数时间戳。
+PEXPIREAT &lt;key&gt; &lt; timestamp &gt; 命令用于将键key 的过期时间设置为timestamp所指定的毫秒数时间戳。
+
+redis过期时间相关命令
+    EXPIRE  
+        语法：EXPIRE key &quot;seconds&quot;
+        设置一个key在当前时间&quot;seconds&quot;(秒)之后过期。返回1代表设置成功，返回0代表key不存在或者无法设置过			期时间
+PEXPIRE
+    语法：PEXPIRE key &quot;milliseconds&quot;
+    设置一个key在当前时间&quot;milliseconds&quot;(毫秒)之后过期。返回1代表设置成功，返回0代表key不存在或者无法设置			过期时间
+    
+TTL 
+    语法：TTL key
+    获取key的过期时间。如果key存在过期时间，返回剩余生存时间(秒)；如果key是永久的，返回-1；如果key不存在或			者已过期，返回-2
+    
+PTTL 
+    语法：PTTL key
+    获取key的过期时间。如果key存在过期时间，返回剩余生存时间(毫秒)；如果key是永久的，返回-1；如果key不存在			或者已过期，返回-2
+
+PERSIST
+    语法：PERSIST key
+    移除key的过期时间，将其转换为永久状态。如果返回1，代表转换成功。如果返回0，代表key不存在或者之前就已经是			永久状态
+
+SETEX
+    语法：SETEX key &quot;seconds&quot; &quot;value&quot;   #value代表新值 ，seconds 代表过期时间
+    SETEX在逻辑上等价于SET和EXPIRE合并的操作，区别之处在于SETEX是一条命令，而命令的执行是原子性的，所以不		会出现并发问题
+</code></pre>
+<p>redis如何清理过期key　<br>　　redis出于性能上的考虑，无法做到对每一个过期的key进行即时的过期监听和删除。但是redis提供了其它的			方法来清理过期的key。<br>　　1.被动清理<br>　　当用户主动访问一个过期的key时，redis会将其直接从内存中删除。</p>
+<p>　　2.主动清理<br>　　在redis的持久化中，我们知道redis为了保持系统的稳定性，健壮性，会周期性的执行一个函数。在这个过程			中，会进行之前已经提到过的自动的持久化操作，同时也会进行内存的主动清理。<br>　　	在内存主动清理的过程中，redis采用了一个随机算法来进行这个过程：简单来说，redis会随机的抽取N(默			认100)个被设置了过期时间的key，检查这其中已经过期的key，将其清除。同时，如果这其中已经过期的			key超过了一定的百分比M(默认是25)，则将继续执行一次主动清理，直至过期key的百分比在概率上降低到			M以下。</p>
+<p>　　3.内存不足时触发主动清理<br>　　	在redis的内存不足时，也会触发主动清理</p>
+<h6 id="5-redis客户端-Jedis"><a href="#5-redis客户端-Jedis" class="headerlink" title="5. redis客户端 Jedis"></a><strong>5. redis客户端 Jedis</strong></h6><p>    Jedis： 是一款java操作Redis数据库的工具，类似于jdbc</p>
+<p>    <strong>1. 入门程序：</strong></p>
+<p>        环境：</p>
+<p>            下载jedis的jar包        commons-pool2    jedis</p>
+<p>​		maven依赖：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>redis.clients<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jedis<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.1.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.commons<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>commons-pool2<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.7.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>        代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1. 获取连接</span></span><br><span class="line"><span class="type">Jedis</span> <span class="variable">jedis</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Jedis</span>(<span class="string">&quot;localhost&quot;</span>,<span class="number">6379</span>);</span><br><span class="line"><span class="comment">//2. 操作</span></span><br><span class="line">jedis.set(<span class="string">&quot;age&quot;</span>,<span class="string">&quot;12&quot;</span>);</span><br><span class="line"><span class="comment">//3. 关闭连接</span></span><br><span class="line">jedis.close();</span><br></pre></td></tr></table></figure>
+
+<p><strong>2. Jedis操作各种redis中的数据结构</strong></p>
+<p>    <strong>字符串类型 string</strong></p>
+<p>        set方法                jedis.set(“age”,”12”);</p>
+<p>        get方法                String age &#x3D; jedis.get(“age”);</p>
+<p>        del方法                jedis.del(“age”);</p>
+<p>        setex方法            jedis.setex(“name”,10,”zhangsan”);</p>
+<p>                        <strong>存储可以指定过期时间的 key value</strong></p>
+<p>    <strong>哈希类型 hash ： map格式</strong></p>
+<p>        hset方法              jedis.hset(“student”,”id”,”1”);          </p>
+<p>        hget方法             String stuName &#x3D; jedis.hget(“student”,”name”);</p>
+<p>​		hsetnx				跟hset类似，key如果有值不覆盖</p>
+<p>        hgetAll方法        Map&lt;String,String&gt; stuMap &#x3D; jedis.hgetAll(“student”);</p>
+<p>    <strong>列表类型 list ： linkedlist格式。支持重复元素</strong></p>
+<p>        lpush方法           jedis.lpush(“myList”,”1”,”2”,”3”);   前面加</p>
+<p>        rpush方法          jedis.rpush(“myList”,”1”,”2”,”3”);	后面加</p>
+<p>        lpop方法            String lStr &#x3D; jedis.lpop(“myList”);</p>
+<p>        rpop方法           String rStr &#x3D; jedis.rpop(“myList”);</p>
+<p>        lrange方法        List<String> myList &#x3D; jedis.lrange(“myList”,0,-1);</p>
+<p>    <strong>集合类型 set ： 不允许重复元素</strong></p>
+<p>        sadd方法          jedis.sadd(“mySet”,”1”,”2”,”3”,”4”,”3”);</p>
+<p>        smembers方法    Set<String> mySet &#x3D; jedis.smembers(“mySet”);</p>
+<p>    <strong>有序集合类型 sortedset：不允许重复元素，且元素有顺序</strong></p>
+<p>        zadd方法            jedis.zadd(“mySortSet”,3,”张三”);</p>
+<p>        zrange方法        Set<String> mySortSet &#x3D; jedis.zrange(“mySortSet”,0,-1);</p>
+<p><strong>3. jedis连接池： JedisPool</strong></p>
+<p>​	为什么要使用Jedis连接池</p>
+<p>​		Redis作为缓存数据库理论上和MySQL一样需要客户端和服务端建立起来连接进行相关操作，使用MySQL的		时候相信大家都会使用一款开源的连接池,例如C3P0.因为直连会消耗大量的数据库资源，每一次新建一个连接		之，使用后再断开连接，对于频繁访问的场景，这显然不是高效的</p>
+<p>​		生产环境一般使用连接池的方式对Redis连接进行管理，所有Jedis对象先放在池子中每一次需要的时候连接		Redis，只需要在池子中借，用完了再归还给池子</p>
+<p>​	 快速入门：</p>
+<p>           代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建一个配置对象来配置连接池</span></span><br><span class="line"><span class="type">JedisPoolConfig</span> <span class="variable">jpc</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">JedisPoolConfig</span>();</span><br><span class="line">jpc.setMaxTotal(<span class="number">100</span>);<span class="comment">//最大连接数</span></span><br><span class="line">jpc.setMaxIdle(<span class="number">10</span>);<span class="comment">//最大空闲连接数</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//连接超时5000ms毫秒</span></span><br><span class="line"><span class="type">int</span> timeout=<span class="number">5000</span>;</span><br><span class="line"><span class="comment">//创建Jedis连接池对象</span></span><br><span class="line"><span class="type">JedisPool</span> <span class="variable">jp</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">JedisPool</span>(jpc,<span class="string">&quot;localhost&quot;</span>,<span class="number">6379</span>,timeout);</span><br><span class="line"></span><br><span class="line"><span class="comment">//获取连接</span></span><br><span class="line"><span class="type">Jedis</span> <span class="variable">jedis</span> <span class="operator">=</span> jp.getResource();</span><br><span class="line"><span class="comment">//使用</span></span><br><span class="line">jedis.set(<span class="string">&quot;age&quot;</span>,<span class="string">&quot;12&quot;</span>);</span><br><span class="line"><span class="comment">//设置有效期</span></span><br><span class="line">jedis.expire(<span class="string">&quot;age&quot;</span>,<span class="number">30</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//关闭,归还给连接池中</span></span><br><span class="line">jedis.close();</span><br></pre></td></tr></table></figure>
+
+
+
+<p>jedis连接池工具类：类似于jdbc工具类，从配置文件读取链接信息</p>
+<p>配置文件jedis.properties</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">host</span>=<span class="string">127.0.0.1</span></span><br><span class="line"><span class="attr">port</span>=<span class="string">6379</span></span><br><span class="line"><span class="attr">maxTotal</span>=<span class="string">100</span></span><br><span class="line"><span class="attr">maxIdle</span>=<span class="string">10</span></span><br></pre></td></tr></table></figure>
+
+<p>JedisPoolUtils代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> JedisPool jedisPool;</span><br><span class="line"><span class="keyword">static</span>&#123;</span><br><span class="line">    <span class="comment">//初始化JedisPool</span></span><br><span class="line">    <span class="comment">//读取配置文件</span></span><br><span class="line">    <span class="type">InputStream</span> <span class="variable">is</span> <span class="operator">=</span> JedisPoolUtils.class.getClassLoader().getResourceAsStream(<span class="string">&quot;jedis.properties&quot;</span>);</span><br><span class="line">    <span class="comment">//创建properties对象</span></span><br><span class="line">    <span class="type">Properties</span> <span class="variable">pros</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Properties</span>();</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        pros.load(is);</span><br><span class="line">    &#125;<span class="keyword">catch</span> (IOException e)&#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//获取配置文件数据初始化JedisPoolConfig对象</span></span><br><span class="line">    <span class="type">JedisPoolConfig</span> <span class="variable">jpc</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">JedisPoolConfig</span>();</span><br><span class="line">    jpc.setMaxTotal(Integer.valueOf(pros.getProperty(<span class="string">&quot;maxTotal&quot;</span>)));</span><br><span class="line">    jpc.setMaxIdle(Integer.valueOf(pros.getProperty(<span class="string">&quot;maxIdle&quot;</span>)));</span><br><span class="line">    <span class="comment">//初始化JedisPool</span></span><br><span class="line">    jedisPool = <span class="keyword">new</span> <span class="title class_">JedisPool</span>(jpc,pros.getProperty(<span class="string">&quot;host&quot;</span>),Integer.parseInt(pros.getProperty(<span class="string">&quot;port&quot;</span>)));</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * jedis连接池返回连接</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Jedis <span class="title function_">getJedis</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> jedisPool.getResource();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        Jedis jedis=getJedis();</span><br><span class="line">        jedis.set(<span class="string">&quot;name&quot;</span>,<span class="string">&quot;1111&quot;</span>);</span><br><span class="line">        jedis.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">晴天☀️</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2022/12/25/redis/">http://example.com/2022/12/25/redis/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">晴天☀️的Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="http://rnfs4jdgz.hn-bkt.clouddn.com/avater/652fb471dfa1d78d5e9ceb8c32c344a.jpg?e=1671956778&amp;token=xfTPLrBLsExu34MiHF7A3uTncybw6cbi2o3OhVYG:Rh_f5NuUnIL7bzOaZafaIqDIx-Y=" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/12/25/springboot/" title="SpringBoot"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">SpringBoot</div></div></a></div><div class="next-post pull-right"><a href="/2022/12/25/hello-world/" title="Hello World"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Hello World</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="http://rnfs4jdgz.hn-bkt.clouddn.com/avater/652fb471dfa1d78d5e9ceb8c32c344a.jpg?e=1671956778&amp;token=xfTPLrBLsExu34MiHF7A3uTncybw6cbi2o3OhVYG:Rh_f5NuUnIL7bzOaZafaIqDIx-Y=" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">晴天☀️</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">3</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/1627233147-lqp"><i class="fab fa-github"></i><span>晴天的github</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">一个还在上学的怨种大学生🥲🥲</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Redis"><span class="toc-number">1.</span> <span class="toc-text">Redis</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#redis%E7%9A%84%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">1.0.0.0.0.1.</span> <span class="toc-text">redis的应用场景</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#2-%E4%B8%8B%E8%BD%BD%E5%AE%89%E8%A3%85"><span class="toc-number">1.0.0.0.0.2.</span> <span class="toc-text">2. 下载安装</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#3-%E5%91%BD%E4%BB%A4%E6%93%8D%E4%BD%9C"><span class="toc-number">1.0.0.0.0.3.</span> <span class="toc-text">3. 命令操作</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#4-%E6%8C%81%E4%B9%85%E5%8C%96"><span class="toc-number">1.0.0.0.0.4.</span> <span class="toc-text">4. 持久化</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#5-redis%E5%AE%A2%E6%88%B7%E7%AB%AF-Jedis"><span class="toc-number">1.0.0.0.0.5.</span> <span class="toc-text">5. redis客户端 Jedis</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2022/12/25/springboot/" title="SpringBoot">SpringBoot</a><time datetime="2022-12-25T08:24:54.224Z" title="发表于 2022-12-25 16:24:54">2022-12-25</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2022/12/25/redis/" title="Redis教程">Redis教程</a><time datetime="2022-12-25T07:59:54.290Z" title="发表于 2022-12-25 15:59:54">2022-12-25</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2022/12/25/hello-world/" title="Hello World">Hello World</a><time datetime="2022-12-25T07:15:48.826Z" title="发表于 2022-12-25 15:15:48">2022-12-25</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By 晴天☀️</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
